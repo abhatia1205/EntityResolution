@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    .tabledef {
+	width: 100%;
+	display: table;
+    }
+    .tablerow {
+	display: table-row;
+    }
+    .leftcell {
+	width: 50%;
+	display: table-cell;
+    }
+    .rightcell {
+	width: 50%;
+	display: table-cell;
+    }
+    div {
+      border: 1px solid powderblue;
+      margin: 4px, 4px;
+      padding: 4px;
+      width: 100%;
+      border: 1px solid powderblue;
+      color: black;
+      overflow-y: hidden;
+      overflow-y: auto;	
+    }
+    .largediv {
+      height: 300px;
+    }
+  </style>
+  <head>
+  </head>
+  <body>
+    <h1>Article Id: {{ article.id }}</h1>
+    <h3>User: {{ user }} </h3>
+    <h3>Email: {{ user.email }}</h3>
+    <div class="largediv">
+      {% for c in content %}
+      <p> {{ c }} </p>
+      {% endfor %}
+    </div>
+    <div class="largediv">
+      <form action="{% url 'update' article.id %}" method="post">{% csrf_token %}
+	<fieldset>
+	  <legend>Specify following resolutions:</legend>
+	  <input type="hidden" name="article_id" id="article_id" value="{{article.id}}">
+	  <ul>
+	    {% for r in resolutions %}
+	    <li>
+	      <ul>
+		<div class="tabledef">
+		  <div class="tablerow">
+		    <div class="leftcell">
+		      <li>Name: {{ r.name }}<br/> Paragraph: {{r.paragraph}} Sentence: {{r.sentence}} </li>
+		      <select name="type:{{r.rid}}:{{r.resolution_index}}" id="type:{{r.rid}}:{{r.resolution_index}}">
+			{% for t in types %}
+			<option value="{{t.id}}">{{t.type}}</option>
+			{% endfor %}
+		      </select>
+		      <li><input type="text" name="text:{{r.rid}}:{{r.resolution_index}}">
+		    </div>
+		    <div class="rightcell">
+		      {{ r.content }}
+		    </div>
+		  </div>
+		</div>
+	      </ul>
+	    </li>
+	    {% endfor %}
+	  </ul>
+	  <input type="submit" value="Submit">
+	</fieldset>
+      </form>
+    </div>
+  </body>
+</html>

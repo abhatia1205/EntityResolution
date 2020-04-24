@@ -1,0 +1,14 @@
+<h1>{{ article.id }}</h1>
+<p>
+  {{ article.content }}
+<ul>
+  {% for r in resolutions %}
+    <li>
+      <ul>
+	<li>{{ r.resolution }}</li>
+	<li>{{ r.resolution_index }}
+      </ul>
+    </li>
+{% endfor %}
+</ul>
+
