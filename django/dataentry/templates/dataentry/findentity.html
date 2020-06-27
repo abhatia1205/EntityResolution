@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    .tabledef {
+  width: 100%;
+  display: table;
+    }
+    .tablerow {
+  display: table-row;
+    }
+    .leftcell {
+  width: 50%;
+  display: table-cell;
+    }
+    .rightcell {
+  width: 50%;
+  display: table-cell;
+    }
+    div {
+      border: 1px solid powderblue;
+      margin: 4px, 4px;
+      padding: 4px;
+      width: 100%;
+      border: 1px solid powderblue;
+      color: black;
+      overflow-y: hidden;
+      overflow-y: auto; 
+    }
+    .largediv {
+      height: 600px;
+    }
+    .search-bar{
+      max-width: 500px;
+      width: 100%;
+    }
+    .res-bar{
+      max-width: 400px;
+      width: 100%;
+      position: relative;
+      left: 800px;
+      top: -50px;
+    }
+    .form-control{
+      max-width: 500px;
+      width: 100%;
+    }
+
+  </style>
+  <head>
+  </head>
+  <body>
+    <h1>Form to find resolutions</h1>
+    <h3>If you cannot find an entity id in the given list, use this one: {{new_entity_id}}</h3>
+    <div class = "res-bar mt-sm-2 mr-2">
+      <form action="{% url 'createresolution' %}" method="post">{% csrf_token %}
+        <input type="text" class="form-control" name="createres" id = "id_r" placeholder = "Create a new resolution">
+      </form>
+    </div>
+    <div class = "search-bar mt-sm-2 mr-2">
+      <form action="{% url 'findentity' %}" method="post">{% csrf_token %}
+        <input type="text" class="form-control" name="search" id = "id_q" placeholder = "Search for resolutions...">
+      </form>
+    </div>
+    <div class="largediv">
+      <fieldset>
+        <legend>The 20 closest Resolutions and their respective Entity Id's</legend>
+        {% if resolutions%}
+        <ul>
+          {% for r in resolutions %}
+          <li>
+            <ul>
+              <div class="tabledef">
+                <div class="tablerow">
+                  <div class="leftcell">
+                    <li>Name: {{ r.name }}<br/> Entity Id: {{r.entity_id}}</li>
+                  </div>
+                  <div class="rightcell">
+                    {{ r.content }}
+                  </div>
+                </div>
+              </div>
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+        {% else%}
+          {% if search_bool%}
+            No entities exist right now
+          {%else%}
+            Search for the resolution you found in the 'next' page. This page displays the top 20 closest resolutions previously labelled by others. Find the resolution in the list that matches the resolution you entered, and enter its entity id into the box in the next page. If no resolutions in the list match the resolution you inputted, click the create entity id button to create a new entity and input this new id in the 'next' page instead.
+          {%endif%}
+        {%endif%}
+      </fieldset>
+    </div>
+  </body>
+</html>
